@@ -6,7 +6,10 @@
 
 int main(int argc, char const *argv[])
 {
-    char op;
+    Artist *artista;
+    Music tmp;
+
+    menu_main();
 
     return 0;
 }

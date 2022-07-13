@@ -1,26 +1,28 @@
-#include <stdlib.h>
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
+#include "menu.h"
 
 char menu_options()
 {
     char option;
 
-    printf("\n\tMENU - MUSICS");
-    printf("\n\t 1 - Register an artist");
-    printf("\n\t 2 - Register a music");
-    printf("\n\t 3 - Edit an artist");
-    printf("\n\t 4 - Edit a music");
-    printf("\n\t 5 - List an artist");
-    printf("\n\t 6 - List a music");
-    printf("\n\t 7 - List all");
-    printf("\n\t 8 - Remove an artist");
-    printf("\n\t 9 - Remove a music");
-    printf("\n\t10 - Search an artist");
-    printf("\n\t11 - Search a music");
-    printf("\n\t12 - Export data");
-    printf("\n\t 0 - Exit");
-    printf("\n\t>>");
+    printf("\n\t\tMENU\n");
+    printf("\n\t0 - Exit\n");
+    printf("\n\t1 - Register an artist");
+    printf("\n\t  - Register a music\n");
+    printf("\n\t2 - Edit an artist");
+    printf("\n\t  - Edit a music\n");
+    printf("\n\t3 - List an artist");
+    printf("\n\t  - List a music");
+    printf("\n\t  - List all\n");
+    printf("\n\t4 - Remove an artist");
+    printf("\n\t  - Remove a music\n");
+    printf("\n\t5 - Search an artist");
+    printf("\n\t  - Search a music\n");
+    printf("\n\t6 - Export data\n");
+    printf("\n\t7 - Clear screen\n");
+    printf("\n\t>>> ");
     setbuf(stdin, NULL);
     scanf("%c", &option);
 
@@ -30,53 +32,68 @@ char menu_options()
 void menu_main()
 {
     char op;
+    char trash;
 
     do
     {
-        op = menu();
+        op = menu_options();
 
         if (op == '1')
-            register_artist();
+        {
+            // register_artist();
+            // register_music();
+            printf("\n\naaa\n\n");
+        }
 
         else if (op == '2')
-            register_music();
+        {
+            // edit_artist();
+            // edit_music();
+            printf("\n\nbbb\n\n");
+        }
 
         else if (op == '3')
-            edit_artist();
+        {
+            // list_artist();
+            // list_music();
+            // list_all();
+            printf("\n\nccc\n\n");
+        }
 
         else if (op == '4')
-            edit_music();
+        {
+            // remove_artist();
+            // remove_music();
+            printf("\n\nddd\n\n");
+        }
 
         else if (op == '5')
-            list_artist();
+        {
+            // search_artist();
+            // search_music();
+            printf("\n\neee\n\n");
+        }
 
         else if (op == '6')
-            list_music();
+        {
+            // export_data();
+            printf("\n\nfff\n\n");
+        }
 
         else if (op == '7')
-            list_all();
-
-        else if (op == '8')
-            remove_artist();
-
-        else if (op == '9')
-            remove_music();
-
-        else if (op == '10')
-            search_artist();
-
-        else if (op == '11')
-            search_music();
-
-        else if (op == '12')
-            export_data();
+            system(CLEAN);
 
         else if (op == '0')
             break;
 
         else
+        {
             printf("\n\n\tInvalid option!!!\n");
+            printf("\tPress any key to continue...");
+            setbuf(stdin, NULL);
+            scanf("%c", &trash);
+            system(CLEAN);
+        }
 
     } while (op != '0');
 }
-

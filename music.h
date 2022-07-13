@@ -1,3 +1,6 @@
+#ifndef __MUSIC_TYPE_H__
+#define __MUSIC_TYPE_H__
+
 typedef struct
 {
     int day;
@@ -14,3 +17,5 @@ typedef struct
     float song_length;
     Date release_date;
 } Music;
+
+#endif
