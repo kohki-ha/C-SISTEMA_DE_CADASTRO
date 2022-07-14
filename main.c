@@ -6,10 +6,22 @@
 
 int main(int argc, char const *argv[])
 {
-    Artist *artista;
-    Music tmp;
+    Artist *artist = malloc(5 * sizeof(Artist));
+    Music *music = malloc(5 * sizeof(Music));
 
-    menu_main();
+    artist = malloc(5 * sizeof(Artist));
+    music = malloc(5 * sizeof(Music));
+
+    for (size_t i = 0; i < 5; i++)
+        artist[i].music = malloc(5 * sizeof(Music));
+
+    for (size_t i = 0; i < 5; i++)
+    {
+        initialize_artist(&artist[i]);
+        initialize_music(&music[i]);
+    }
+
+    menu_main(artist, music);
 
     return 0;
 }
