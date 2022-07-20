@@ -40,14 +40,14 @@ typedef struct
     int age;
     char gender[21];
     char country[21];
-    //Music *music;
+    // Music *music;
 } Artist;
 #endif //__ARTIST_TYPE__
 
 #ifndef __ARTIST_H__
 #define __ARTIST_H__
 void register_artist(Artist *artist);
-char edit_artist_options(Artist *artist);
+char edit_artist_menu();
 void edit_artist_name(Artist *artist);
 void edit_artist_age(Artist *artist);
 void edit_artist_gender(Artist *artist);
@@ -55,9 +55,11 @@ void edit_artist_country(Artist *artist);
 void edit_artist(Artist *artist, Music *music);
 void edit_artist_by_artist_id(Artist *artist, Music *music, int artist_length);
 void edit_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
-void list_artist(Artist *artist, int artist_length);
-void remove_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
-void remove_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void list_artist(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
+void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 #endif //__ARTIST_H__
 
 #ifndef __MUSIC_H__
@@ -74,6 +76,10 @@ void show_artists_musics(Artist *artist, Music *music, int music_length);
 void edit_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void edit_music_by_music_id(Music *music, int artist_length, int music_length);
 void list_music(Music *music, int music_length, Artist *artist);
+void delete_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_music_by_music_id(Artist *artist, Music *music, int music_length);
+void search_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_music_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 #endif //__MUSIC_H__
 
 #ifndef __MENU_H__
@@ -81,19 +87,25 @@ void list_music(Music *music, int music_length, Artist *artist);
 void initialize_artist(Artist *artist);
 void initialize_music(Music *music);
 int select_artist(Artist *artist, int artist_length);
-char menu_options();
-Artist *realloc_artist(Artist *artist, int *artist_length);
-Artist *register_artist_option(Artist *artist, int *artist_length, int *counter_artist);
-Music *realloc_music(Music *music, int *music_length);
 int verify_registered_artist(Artist *artist, int artist_length);
-Music *register_music_option(Artist *artist, int artist_length, Music *music, int *music_length, int *counter_music);
 int verify_registered_music(Music *music, int music_length);
+char menu_options();
 char menu_register();
 char menu_edit_main();
-char menu_edit_by();
+char menu_by();
 char menu_list();
-char menu_remove();
+char menu_delete();
 char menu_search();
-void list_all(Artist *artist, Music *music, int artist_length, int music_length);
+Artist *realloc_artist(Artist *artist, int *artist_length);
+Music *realloc_music(Music *music, int *music_length);
+Artist *register_artist_option(Artist *artist, int *artist_length, int *counter_artist);
+Music *register_music_option(Artist *artist, int artist_length, Music *music, int *music_length, int *counter_music);
+void edit_artist_option(Artist *artist, Music *music, int artist_length, int music_length);
+void edit_music_option(Artist *artist, Music *music, int artist_length, int music_length);
+void list_artist_option(Artist *artist, Music *music, int artist_length, int music_length);
+void list_music_option(Artist *artist, Music *music, int music_length);
+void list_all_option(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_artist_option(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_music_option(Artist *artist, Music *music, int artist_length, int music_length);
 void menu_main(Artist *artist, Music *music);
 #endif //__MENU_H__

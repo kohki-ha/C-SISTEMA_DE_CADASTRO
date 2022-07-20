@@ -51,4 +51,8 @@ void show_artists_musics(Artist *artist, Music *music, int music_length);
 void edit_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void edit_music_by_music_id(Music *music, int artist_length, int music_length);
 void list_music(Music *music, int music_length, Artist *artist);
+void delete_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_music_by_music_id(Artist *artist, Music *music, int music_length);
+void search_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_music_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 #endif //__MUSIC_H__

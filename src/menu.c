@@ -34,7 +34,7 @@ int select_artist(Artist *artist, int artist_length)
     printf("\n\tSelect an artist ID to register a music: ");
     scanf("%d", &id);
 
-    for (size_t i = 0; i < artist_length; i++) // check if thre is an artist with this ID 
+    for (size_t i = 0; i < artist_length; i++) // check if there is an artist with this ID
         if (artist[i].id == id)
             artist_exist = 1;
 
@@ -42,6 +42,28 @@ int select_artist(Artist *artist, int artist_length)
         return id;
     else
         return -1;
+}
+
+int verify_registered_artist(Artist *artist, int artist_length)
+{
+    int are_registered = 0;
+
+    for (size_t i = 0; i < artist_length; i++) // checks how many artist are registered
+        if (artist[i].id > -1)
+            are_registered++;
+
+    return are_registered;
+}
+
+int verify_registered_music(Music *music, int music_length)
+{
+    int are_registered = 0;
+
+    for (size_t i = 0; i < music_length; i++) // checks how many musics are registered
+        if (music[i].id > -1)
+            are_registered++;
+
+    return are_registered;
 }
 
 char menu_options()
@@ -56,7 +78,7 @@ char menu_options()
     printf("\n\t(artist & music)\n");
     printf("\n\t3 - List");
     printf("\n\t(all & artist & music)\n");
-    printf("\n\t4 - Remove");
+    printf("\n\t4 - delete");
     printf("\n\t(artist & music)\n");
     printf("\n\t5 - Search");
     printf("\n\t(artist & music)\n");
@@ -67,164 +89,6 @@ char menu_options()
     scanf("%c", &option);
 
     return option;
-}
-
-Artist *realloc_artist(Artist *artist, int *artist_length)
-{
-    (*artist_length) += 5;
-    artist = realloc(artist, (*artist_length) * sizeof(Artist)); // realloc with new length
-
-    for (size_t i = ((*artist_length) - 5); i < (*artist_length); i++) // initialize new artists
-        initialize_artist(&artist[i]);
-
-    return artist;
-}
-
-Artist *register_artist_option(Artist *artist, int *artist_length, int *counter_artist)
-{
-    if ((*counter_artist) > (*artist_length) - 1) // realloc when it passes the limit
-        artist = realloc_artist(artist, artist_length);
-
-    artist[(*counter_artist)].id = (*counter_artist); // gives a value for the artist's ID
-    register_artist(&artist[(*counter_artist)]);
-
-    (*counter_artist)++; // increments for the next ID
-
-    return artist;
-}
-
-Music *realloc_music(Music *music, int *music_length)
-{
-    (*music_length) += 5; 
-    music = realloc(music, (*music_length) * sizeof(Music)); // realloc with new length
-
-    for (size_t i = ((*music_length) - 4); i < (*music_length); i++) // initialize new musics
-        initialize_music(&music[i]);
-
-    return music;
-}
-
-int verify_registered_artist(Artist *artist, int artist_length)
-{
-    int are_registered = 0;
-
-    for (size_t i = 0; i < artist_length; i++)
-        if (artist[i].id > -1)
-            are_registered++;
-
-    return are_registered;
-}
-
-int verify_registered_music(Music *music, int music_length)
-{
-    int are_registered = 0;
-
-    for (size_t i = 0; i < music_length; i++)
-        if (music[i].id > -1)
-            are_registered++;
-
-    return are_registered;
-}
-
-Music *register_music_option(Artist *artist, int artist_length, Music *music, int *music_length, int *counter_music)
-{
-    int id;
-
-    if (verify_registered_artist(artist, artist_length) != 0) // checks if there are any artists açready registered
-    {
-        do
-        {
-            id = select_artist(artist, artist_length); // choose an artist to which the music will be registered
-
-            if (id != -1) // if artist was find
-            {
-                printf("\n\n\t%d\n", (*counter_music));
-
-                if ((*counter_music) > (*music_length) - 1)
-                    music = realloc_music(music, music_length);
-
-                music[(*counter_music)].id = (*counter_music);
-                music[(*counter_music)].id_artist = id;
-
-                register_music(&music[(*counter_music)]);
-
-                (*counter_music)++;
-            }
-            else
-                printf("\n\n\tArtist not found...");
-        } while (id == -1);
-    }
-    else
-        printf("\n\n\tNo registered artist... you must have at least one registered artist!!");
-
-    return music;
-}
-
-void edit_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
-{
-    char option_edit_by;
-
-    if (verify_registered_artist(artist, artist_length) != 0)
-    {
-        option_edit_by = menu_edit_by();
-
-        if (option_edit_by == '1') // edit by artist ID
-            edit_artist_by_artist_id(artist, music, artist_length);
-        else if (option_edit_by == '2') // edit by music ID
-        {
-            if (verify_registered_music(music, music_length) != 0)
-                edit_artist_by_music_id(artist, music, artist_length, music_length);
-            else
-                printf("\n\tNo music registered... you must have at least one registered music!!");
-        }
-        else
-            printf("\n\n\tInvalid option!!!");
-    }
-    else
-        printf("\n\n\tNo registered artist... you must have at least one registered artist!!");
-}
-
-void edit_music_option(Artist *artist, Music *music, int artist_length, int music_length)
-{
-    char option_edit_by;
-
-    if (verify_registered_music(music, music_length) != 0)
-    {
-        option_edit_by = menu_edit_by();
-
-        if (option_edit_by == '1') // edit by artist ID
-            edit_music_by_artist_id(artist, music, artist_length, music_length);
-        else if (option_edit_by == '2') // edit by music ID
-            edit_music_by_music_id(music, artist_length, music_length);
-        else
-            printf("\n\n\tInvalid option!!!");
-    }
-    else
-        printf("\n\tNo music registered... you must have at least one registered music!!");
-}
-
-void remove_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
-{
-    char option_edit_by;
-    int id;
-
-    option_edit_by = menu_edit_by();
-
-    if (option_edit_by == '1') // by artist ID
-    {
-        printf("\n\tArtist ID to be removed: ");
-        scanf("%d", &id);
-        remove_artist_by_artist_id(artist, music, artist_length, music_length, id);
-    }
-    else if (option_edit_by == '2') // by music ID
-    {
-        if (verify_registered_music(music, music_length) != 0)
-            remove_artist_by_music_id(artist, music, artist_length, music_length);
-        else
-            printf("\n\tNo music registered... you must have at least one registered music!!");
-    }
-    else
-        printf("\n\n\tInvalid option!!!");
 }
 
 char menu_register()
@@ -255,12 +119,12 @@ char menu_edit_main()
     return option;
 }
 
-char menu_edit_by()
+char menu_by()
 {
     char option;
 
-    printf("\n\t1 - Edit by artist ID");
-    printf("\n\t2 - Edit by music ID");
+    printf("\n\t1 - By artist ID");
+    printf("\n\t2 - By music ID");
     printf("\n\t>>> ");
     setbuf(stdin, NULL);
     scanf("%c", &option);
@@ -283,13 +147,13 @@ char menu_list()
     return option;
 }
 
-char menu_remove()
+char menu_delete()
 {
     char option;
 
     printf("\n\n\t0 - Skip");
-    printf("\n\t1 - Remove an artist");
-    printf("\n\t2 - Remove a music");
+    printf("\n\t1 - delete an artist");
+    printf("\n\t2 - delete a music");
     printf("\n\t>>> ");
     setbuf(stdin, NULL);
     scanf("%c", &option);
@@ -311,40 +175,254 @@ char menu_search()
     return option;
 }
 
-void list_all(Artist *artist, Music *music, int artist_length, int music_length)
+Artist *realloc_artist(Artist *artist, int *artist_length)
 {
-    if (verify_registered_artist(artist, artist_length) != 0 && verify_registered_music(music, music_length) != 0)
+    (*artist_length) += 5;
+    artist = realloc(artist, (*artist_length) * sizeof(Artist)); // realloc with new length
+
+    for (size_t i = ((*artist_length) - 5); i < (*artist_length); i++) // initialize new artists
+        initialize_artist(&artist[i]);
+
+    return artist;
+}
+
+Music *realloc_music(Music *music, int *music_length)
+{
+    (*music_length) += 5;
+    music = realloc(music, (*music_length) * sizeof(Music)); // realloc with new length
+
+    for (size_t i = ((*music_length) - 4); i < (*music_length); i++) // initialize new musics
+        initialize_music(&music[i]);
+
+    return music;
+}
+
+Artist *register_artist_option(Artist *artist, int *artist_length, int *counter_artist)
+{
+    if ((*counter_artist) > (*artist_length) - 1) // realloc when it passes the limit
+        artist = realloc_artist(artist, artist_length);
+
+    artist[(*counter_artist)].id = (*counter_artist); // gives a value for the artist's ID
+
+    register_artist(&artist[(*counter_artist)]);
+
+    (*counter_artist)++; // increments for the next ID
+
+    return artist;
+}
+
+Music *register_music_option(Artist *artist, int artist_length, Music *music, int *music_length, int *counter_music)
+{
+    int id;
+
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if there are any artists açready registered
     {
-        list_artist(artist, artist_length);
+        do // artist's ID must exist
+        {
+            id = select_artist(artist, artist_length); // choose an artist to which the music will be registered
+
+            if (id != -1) // register a music if the artist was find
+            {
+                printf("\n\n\t%d\n", (*counter_music));
+
+                if ((*counter_music) > (*music_length) - 1) // realloc when the index is over size
+                    music = realloc_music(music, music_length);
+
+                music[(*counter_music)].id = (*counter_music);
+                music[(*counter_music)].id_artist = id;
+
+                register_music(&music[(*counter_music)]);
+
+                (*counter_music)++;
+            }
+            else
+                printf("\n\n\tArtist not found...");
+        } while (id == -1);
+    }
+    else
+        printf("\n\n\tNo registered artist... you must have at least one registered artist!!");
+
+    return music;
+}
+
+void edit_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+    {
+        option_by = menu_by();
+
+        if (option_by == '1') // by artist ID
+            edit_artist_by_artist_id(artist, music, artist_length);
+        else if (option_by == '2') // by music ID
+        {
+            if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+                edit_artist_by_music_id(artist, music, artist_length, music_length);
+            else
+                printf("\n\tNo music registered... you must have at least one registered music!!");
+        }
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\n\tNo registered artist... you must have at least one registered artist!!");
+}
+
+void edit_music_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+
+    if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+    {
+        option_by = menu_by();
+
+        if (option_by == '1') // by artist ID
+            edit_music_by_artist_id(artist, music, artist_length, music_length);
+        else if (option_by == '2') // by music ID
+            edit_music_by_music_id(music, artist_length, music_length);
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\tNo music registered... you must have at least one registered music!!");
+}
+
+void list_all_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    if (verify_registered_artist(artist, artist_length) != 0 && verify_registered_music(music, music_length) != 0) // checks if it has at least one artist & music
+    {
+        list_artist(artist, music, artist_length, music_length);
         list_music(music, music_length, artist);
     }
-    else if (verify_registered_artist(artist, artist_length) != 0 && verify_registered_music(music, music_length) == 0)
-        list_artist(artist, artist_length);
-    else if (verify_registered_artist(artist, artist_length) == 0 && verify_registered_music(music, music_length) != 0)
+    else if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+        list_artist(artist, music, artist_length, music_length);
+    else if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
         list_music(music, music_length, artist);
     else
-        printf("\n\tNo artists and no music to list...");
+        printf("\n\tNo artists and no musics to list...");
+}
+
+void list_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+        list_artist(artist, music, artist_length, music_length);
+    else
+        printf("\n\tNo artists and no musics to list...");
+}
+
+void list_music_option(Artist *artist, Music *music, int music_length)
+{
+    if (verify_registered_music(music, music_length) != 0 != 0) // checks if it has at least one music
+        list_music(music, music_length, artist);
+    else
+        printf("\n\tNo artists and no musics to list...");
+}
+
+void delete_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+    int id;
+
+    option_by = menu_by();
+
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+    {
+        if (option_by == '1') // by artist ID
+        {
+            printf("\n\tArtist ID to be deleted: ");
+            scanf("%d", &id);
+
+            delete_artist_by_artist_id(artist, music, artist_length, music_length, id);
+        }
+        else if (option_by == '2') // by music ID
+        {
+            if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+                delete_artist_by_music_id(artist, music, artist_length, music_length);
+            else
+                printf("\n\tNo music registered... you must have at least one registered music!!");
+        }
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\n\tNo registered artist... you must have at least one registered artist!!");
+}
+
+void delete_music_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+
+    if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+    {
+        option_by = menu_by();
+
+        if (option_by == '1') // by artist ID
+            delete_music_by_artist_id(artist, music, artist_length, music_length);
+        else if (option_by == '2') // by music ID
+            delete_music_by_music_id(artist, music, music_length);
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\tNo music registered... you must have at least one registered music!!");
+}
+
+void serach_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+    {
+        option_by = menu_by();
+
+        if (option_by == '1') // by artist ID
+            search_artist_by_artist_id(artist, music, artist_length, music_length);
+        else if (option_by == '2') // by music ID
+            search_artist_by_music_id(artist, music, artist_length, music_length);
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\tNo music registered... you must have at least one registered music!!");
+}
+
+void serach_music_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    char option_by;
+
+    if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+    {
+        option_by = menu_by();
+
+        if (option_by == '1') // by artist ID
+            search_music_by_artist_id(artist, music, artist_length, music_length);
+        else if (option_by == '2') // by music ID
+            search_music_by_music_id(artist, music, artist_length, music_length);
+        else
+            printf("\n\n\tInvalid option!!!");
+    }
+    else
+        printf("\n\tNo music registered... you must have at least one registered music!!");
 }
 
 void menu_main(Artist *artist, Music *music)
 {
     char option_main_menu;
     char option_sub_menu;
-    char option_edit_by;
     int artist_length = 5;
     int music_length = 5;
     int counter_artist = 0;
     int counter_music = 0;
-    int id;
 
-    do
+    do // exit from main menu when option is '0'
     {
         option_main_menu = menu_options();
 
         switch (option_main_menu)
         {
-        case '1':
-            do
+        case '1': // register
+            do    // option must be '1', '2' or '0'
             {
                 option_sub_menu = menu_register();
                 if (option_sub_menu == '0')
@@ -359,8 +437,8 @@ void menu_main(Artist *artist, Music *music)
             } while (option_sub_menu != '1' && option_sub_menu != '2');
             break;
 
-        case '2':
-            do
+        case '2': // edit
+            do    // option must be '1', '2' or '0'
             {
                 option_sub_menu = menu_edit_main();
                 if (option_sub_menu == '0')
@@ -376,58 +454,51 @@ void menu_main(Artist *artist, Music *music)
             } while (option_sub_menu != '1' && option_sub_menu != '2');
             break;
 
-        case '3':
-            do
+        case '3': // list
+            do    // option must be '1', '2' or '0'
             {
                 option_sub_menu = menu_list();
                 if (option_sub_menu == '0')
                     break;
 
                 if (option_sub_menu == '1') // list all
-                    list_all(artist, music, artist_length, music_length);
+                    list_all_option(artist, music, artist_length, music_length);
                 else if (option_sub_menu == '2') // list an artist
-                    list_artist(artist, artist_length);
+                    list_artist_option(artist, music, artist_length, music_length);
                 else if (option_sub_menu == '3') // list a music
-                    list_music(music, music_length, artist);
+                    list_music_option(artist, music, music_length);
                 else
                     printf("\n\n\tInvalid option!!!");
             } while (option_sub_menu != '1' && option_sub_menu != '2' && option_sub_menu != '3');
             break;
 
-        case '4':
-            do
+        case '4': // delete
+            do    // option must be '1', '2' or '0'
             {
-                option_sub_menu = menu_remove();
+                option_sub_menu = menu_delete();
                 if (option_sub_menu == '0')
                     break;
 
-                if (option_sub_menu == '1') // remove an artist
-                    remove_artist_option(artist, music, artist_length, music_length);
-                else if (option_sub_menu == '2') // remove a music
-                {
-                    /// remove_music();
-                    printf("\na\n");
-                }
+                if (option_sub_menu == '1') // delete an artist
+                    delete_artist_option(artist, music, artist_length, music_length);
+                else if (option_sub_menu == '2') // delete a music
+                    delete_music_option(artist, music, artist_length, music_length);
                 else
                     printf("\n\n\tInvalid option!!!");
             } while (option_sub_menu != '1' && option_sub_menu != '2');
             break;
 
-        case '5':
-            do
+        case '5': // search
+            do    // option must be '1', '2' or '0'
             {
                 option_sub_menu = menu_search();
                 if (option_sub_menu == '0')
                     break;
 
                 if (option_sub_menu == '1') // search an artist
-                {
-                    /// search_artist();
-                }
+                    serach_artist_option(artist, music, artist_length, music_length);
                 else if (option_sub_menu == '2') // search a music
-                {
-                    /// search_music();
-                }
+                    serach_music_option(artist, music, artist_length, music_length);
                 else
                     printf("\n\n\tInvalid option!!!");
             } while (option_sub_menu != '1' && option_sub_menu != '2');

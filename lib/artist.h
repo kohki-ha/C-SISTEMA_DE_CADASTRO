@@ -41,7 +41,7 @@ typedef struct
 #ifndef __ARTIST_H__
 #define __ARTIST_H__
 void register_artist(Artist *artist);
-char edit_artist_options(Artist *artist);
+char edit_artist_menu();
 void edit_artist_name(Artist *artist);
 void edit_artist_age(Artist *artist);
 void edit_artist_gender(Artist *artist);
@@ -49,7 +49,9 @@ void edit_artist_country(Artist *artist);
 void edit_artist(Artist *artist, Music *music);
 void edit_artist_by_artist_id(Artist *artist, Music *music, int artist_length);
 void edit_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
-void list_artist(Artist *artist, int artist_length);
-void remove_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
-void remove_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void list_artist(Artist *artist, Music *music, int artist_length, int music_length);
+void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
+void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
+void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 #endif //__ARTIST_H__

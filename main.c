@@ -12,9 +12,6 @@ int main(int argc, char const *argv[])
     artist = malloc(5 * sizeof(Artist)); // starts storage at 5
     music = malloc(5 * sizeof(Music));   // starts storage at 5
 
-    // for (size_t i = 0; i < 5; i++)
-    //     artist[i].music = malloc(5 * sizeof(Music)); // starts storage at 5
-
     for (size_t i = 0; i < 5; i++) // set initial values for the structs members
     {
         initialize_artist(&artist[i]);
