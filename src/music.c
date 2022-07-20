@@ -162,8 +162,8 @@ void show_artists_musics(Artist *artist, Music *music, int music_length)
 {
     printf("\n\tArtist's musics:");
 
-    for (size_t i = 0; i < music_length; i++)
-        if (artist->id == music[i].id_artist) // show artist's musics if
+    for (size_t i = 0; i < music_length; i++) // find artist's music to print
+        if (artist->id == music[i].id_artist) 
             printf("\n\tMusic name: %21s | ID: %-2d", music[i].name, music[i].id);
 }
 
@@ -189,7 +189,7 @@ void edit_music_by_artist_id(Artist *artist, Music *music, int artist_length, in
             printf("\n\tMusic ID to be edited: ");
             scanf("%d", &id_music);
 
-            for (size_t i = 0; i < music_length; i++)
+            for (size_t i = 0; i < music_length; i++) // find the music to edit
                 if (music[i].id == id_music)
                     edit_music(&music[id_music]);
         }
@@ -319,4 +319,25 @@ void search_music_by_music_id(Artist *artist, Music *music, int artist_length, i
     }
     else
         printf("\n\tMusic ID not found...");
+}
+
+void export_music(Music *music, Artist *artist, int music_length)
+{
+    FILE *f = fopen("music.csv", "w");
+
+    if (f == NULL)
+    {
+        fprintf(f, "Error opening file...\n");
+        exit(1);
+    }
+
+    fprintf(f, "ID, Name, Album, Genre, Song length , Release date, Artist ID\n");
+
+    for (size_t i = 0; i < music_length; i++)
+    {
+        if (music[i].id > -1)
+            fprintf(f, "%d, %s, %s, %s, %d:%d, %d/%d/%d, %d\n", music[i].id, music[i].name, music[i].album, music[i].genre, music[i].song_length.minutes, music[i].song_length.seconds, music[i].release_date.day, music[i].release_date.month, music[i].release_date.year, artist[music[i].id_artist].id);
+    }
+
+    fclose(f);
 }

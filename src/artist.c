@@ -178,27 +178,29 @@ void list_artist(Artist *artist, Music *music, int artist_length, int music_leng
     int aux = 0;
 
     printf("\n\n\tArtist list");
-    printf("\n\tID | Name                  | Age | Gender                | Country               | Musics\n");
+    printf("\n\tID | Name                  | Age | Gender                | Country               | Musics");
 
     for (size_t i = 0; i < artist_length; i++)
         if (artist[i].id > -1)
         {
             aux = 0;
-            printf("\n\t%-2d | %-21s | %-3d | %-21s | %-21s ", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
+            printf("\n\n\t%-2d | %-21s | %-3d | %-21s | %-21s ", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
             for (size_t j = 0; j < music_length; j++)
             {
                 if (music[j].id_artist == artist[i].id && aux == 0)
                 {
                     aux++;
-                    printf("| %s\n", music[j].name);
+                    printf("| %s", music[j].name);
                 }
                 else if (music[j].id_artist == artist[i].id && aux > 0)
-                    printf("                                                                                         | %s\n", music[j].name);
+                    printf("\n                                                                                         | %s", music[j].name);
             }
+            if (aux == 0) // when there is no music
+                printf("| none\n");
         }
 }
 
-void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id)
+void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id, int alert)
 {
     int found = -1;
 
@@ -217,7 +219,7 @@ void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length,
 
         artist[id].id = -1;
     }
-    else
+    else if (alert == 1)
         printf("\n\tArtist ID not found...");
 }
 
@@ -225,6 +227,7 @@ void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, 
 {
     int id;
     int found = -1;
+    int alert = 0;
 
     printf("\n\tArtist's music ID to be deleted: ");
     scanf("%d", &id);
@@ -237,7 +240,7 @@ void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, 
     {
         for (size_t j = 0; j < artist_length; j++) // delete this music's artist
             if (music[id].id_artist == artist[j].id)
-                delete_artist_by_artist_id(artist, music, artist_length, music_length, j);
+                delete_artist_by_artist_id(artist, music, artist_length, music_length, j, alert);
     }
     else
         printf("\n\tMusic ID not found...");
@@ -271,6 +274,8 @@ void search_artist_by_artist_id(Artist *artist, Music *music, int artist_length,
             else if (music[j].id_artist == artist[id].id && aux > 0)
                 printf("                                                                                         | %s\n", music[j].name);
         }
+        if (aux == 0) // when there is no music
+            printf("| none\n");
     }
     else
         printf("\n\tArtist ID not found...");
@@ -298,9 +303,9 @@ void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, 
                 printf("\n\tID | Name                  | Age | Gender                | Country               | Musics\n");
                 printf("\n\t%-2d | %-21s | %-3d | %-21s | %-21s ", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
 
-                for (size_t j = 0; j < music_length; j++)
+                for (size_t j = 0; j < music_length; j++) // printf the musics
                 {
-                    if (music[j].id_artist == artist[i].id && aux == 0)
+                    if (music[j].id_artist == artist[i].id && aux == 0) // first music print
                     {
                         aux++;
                         printf("| %s\n", music[j].name);
@@ -308,9 +313,30 @@ void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, 
                     else if (music[j].id_artist == artist[i].id && aux > 0)
                         printf("                                                                                         | %s\n", music[j].name);
                 }
+                if (aux == 0) // when there is no music
+                    printf("| none\n");
             }
         }
     }
     else
         printf("\n\tMusic ID not found...");
+}
+
+void export_artist(Artist *artist, int artist_length)
+{
+    FILE *f = fopen("artist.csv", "w");
+
+    if (f == NULL)
+    {
+        printf("Error opening file...\n");
+        exit(1);
+    }
+
+    fprintf(f, "ID, Name, Age, Gender, Country\n");
+
+    for (size_t i = 0; i < artist_length; i++)
+        if (artist[i].id > -1)
+            fprintf(f, "%d, %s, %d, %s, %s\n", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
+
+    fclose(f);
 }

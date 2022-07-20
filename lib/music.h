@@ -55,4 +55,5 @@ void delete_music_by_artist_id(Artist *artist, Music *music, int artist_length, 
 void delete_music_by_music_id(Artist *artist, Music *music, int music_length);
 void search_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_music_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void export_music(Music *music, Artist *artist, int music_length);
 #endif //__MUSIC_H__

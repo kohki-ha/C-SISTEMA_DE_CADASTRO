@@ -13,9 +13,9 @@ main.o: main.c
 clean:
 	@echo "Cleaning project's exe & objects files..."
 # for linux: 
-#	rm -f main.exe *.o main
+#	rm -f main.exe *.o *.csv *.dat main
 # for windows: 
-	del /Q /F main.exe *.o
+	del /Q /F main.exe *.o *.csv *.dat
 	@echo "Cleaning completed!"
 
 run:

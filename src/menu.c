@@ -223,8 +223,6 @@ Music *register_music_option(Artist *artist, int artist_length, Music *music, in
 
             if (id != -1) // register a music if the artist was find
             {
-                printf("\n\n\t%d\n", (*counter_music));
-
                 if ((*counter_music) > (*music_length) - 1) // realloc when the index is over size
                     music = realloc_music(music, music_length);
 
@@ -293,6 +291,7 @@ void list_all_option(Artist *artist, Music *music, int artist_length, int music_
     if (verify_registered_artist(artist, artist_length) != 0 && verify_registered_music(music, music_length) != 0) // checks if it has at least one artist & music
     {
         list_artist(artist, music, artist_length, music_length);
+        printf("\n");
         list_music(music, music_length, artist);
     }
     else if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
@@ -322,6 +321,7 @@ void list_music_option(Artist *artist, Music *music, int music_length)
 void delete_artist_option(Artist *artist, Music *music, int artist_length, int music_length)
 {
     char option_by;
+    int alert = 1;
     int id;
 
     option_by = menu_by();
@@ -333,7 +333,7 @@ void delete_artist_option(Artist *artist, Music *music, int artist_length, int m
             printf("\n\tArtist ID to be deleted: ");
             scanf("%d", &id);
 
-            delete_artist_by_artist_id(artist, music, artist_length, music_length, id);
+            delete_artist_by_artist_id(artist, music, artist_length, music_length, id, alert);
         }
         else if (option_by == '2') // by music ID
         {
@@ -384,7 +384,7 @@ void serach_artist_option(Artist *artist, Music *music, int artist_length, int m
             printf("\n\n\tInvalid option!!!");
     }
     else
-        printf("\n\tNo music registered... you must have at least one registered music!!");
+        printf("\n\tNo artist registered... you must have at least one registered artist!!");
 }
 
 void serach_music_option(Artist *artist, Music *music, int artist_length, int music_length)
@@ -406,7 +406,46 @@ void serach_music_option(Artist *artist, Music *music, int artist_length, int mu
         printf("\n\tNo music registered... you must have at least one registered music!!");
 }
 
-void menu_main(Artist *artist, Music *music)
+void export_option(Artist *artist, Music *music, int artist_length, int music_length)
+{
+    if (verify_registered_artist(artist, artist_length) != 0) // checks if it has at least one artist
+        export_artist(artist, artist_length);
+    else
+        printf("\n\tNo artist registered... you must have at least one registered artist!!");
+
+    if (verify_registered_music(music, music_length) != 0) // checks if it has at least one music
+        export_music(music, artist, music_length);
+    else
+        printf("\n\tNo music registered... you must have at least one registered music!!");
+}
+
+void exit_option(Artist *artist, Music *music, int counter_artist, int counter_music, int first_time)
+{
+    FILE *save_data;
+
+    if (first_time == 1)                     // if it's first time using this software
+        save_data = fopen("data.dat", "wb"); // create the file to put the data
+    else
+        save_data = fopen("data.dat", "r+b"); // open existing file to add new data
+
+    if (save_data == NULL)
+    {
+        printf("Error opening file...\n");
+        exit(1);
+    }
+
+    artist = realloc(artist, counter_artist * sizeof(Artist)); // realloc with new length
+    music = realloc(music, counter_music * sizeof(Music));     // realloc with new length
+
+    fwrite(&counter_artist, sizeof(int), 1, save_data);
+    fwrite(&counter_music, sizeof(int), 1, save_data);
+    fwrite(artist, sizeof(Artist), counter_artist, save_data);
+    fwrite(music, sizeof(Music), counter_music, save_data);
+
+    fclose(save_data);
+}
+
+void menu_main(Artist *artist, Music *music, int first_time)
 {
     char option_main_menu;
     char option_sub_menu;
@@ -414,6 +453,26 @@ void menu_main(Artist *artist, Music *music)
     int music_length = 5;
     int counter_artist = 0;
     int counter_music = 0;
+    FILE *load;
+
+    if (first_time == 0) // load preview data when not the first time using this software
+    {
+        load = fopen("data.dat", "r+b");
+
+        fread(&artist_length, sizeof(int), 1, load);
+        fread(&music_length, sizeof(int), 1, load);
+
+        counter_artist = artist_length;
+        counter_music = music_length;
+
+        artist = realloc(artist, artist_length * sizeof(Artist)); // realloc with new length
+        music = realloc(music, music_length * sizeof(Music));     // realloc with new length
+
+        fread(artist, sizeof(Artist), artist_length, load);
+        fread(music, sizeof(Music), music_length, load);
+
+        fclose(load);
+    }
 
     do // exit from main menu when option is '0'
     {
@@ -505,7 +564,7 @@ void menu_main(Artist *artist, Music *music)
             break;
 
         case '6': // export data
-            /// export_data();
+            export_option(artist, music, artist_length, music_length);
             break;
 
         case '7': // clear screen
@@ -513,6 +572,7 @@ void menu_main(Artist *artist, Music *music)
             break;
 
         case '0': // exit
+            exit_option(artist, music, counter_artist, counter_music, first_time);
             break;
 
         default:

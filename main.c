@@ -3,9 +3,11 @@
 #include "./lib/artist.h"
 #include "./lib/music.h"
 #include "./lib/menu.h"
+#include "./lib/login.h"
 
 int main(int argc, char const *argv[])
 {
+    int first_time = 0; // 0 (FALSE) or 1 (TRUE)
     Artist *artist;
     Music *music;
 
@@ -18,7 +20,12 @@ int main(int argc, char const *argv[])
         initialize_music(&music[i]);
     }
 
-    menu_main(artist, music); // call main menu
+    first_time = login();
+
+    menu_main(artist, music, first_time); // call main menu
+
+    free(artist);
+    free(music);
 
     return 0;
 }

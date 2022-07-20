@@ -56,10 +56,11 @@ void edit_artist(Artist *artist, Music *music);
 void edit_artist_by_artist_id(Artist *artist, Music *music, int artist_length);
 void edit_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 void list_artist(Artist *artist, Music *music, int artist_length, int music_length);
-void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
+void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id, int alert);
 void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void export_artist(Artist *artist, int artist_length);
 #endif //__ARTIST_H__
 
 #ifndef __MUSIC_H__
@@ -80,6 +81,7 @@ void delete_music_by_artist_id(Artist *artist, Music *music, int artist_length, 
 void delete_music_by_music_id(Artist *artist, Music *music, int music_length);
 void search_music_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_music_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void export_music(Music *music, Artist *artist, int music_length);
 #endif //__MUSIC_H__
 
 #ifndef __MENU_H__
@@ -107,5 +109,6 @@ void list_music_option(Artist *artist, Music *music, int music_length);
 void list_all_option(Artist *artist, Music *music, int artist_length, int music_length);
 void delete_artist_option(Artist *artist, Music *music, int artist_length, int music_length);
 void delete_music_option(Artist *artist, Music *music, int artist_length, int music_length);
-void menu_main(Artist *artist, Music *music);
+void exit_option(Artist *artist, Music *music, int counter_artist, int counter_music, int first_time);
+void menu_main(Artist *artist, Music *music, int first_time);
 #endif //__MENU_H__

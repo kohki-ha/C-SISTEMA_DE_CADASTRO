@@ -50,8 +50,9 @@ void edit_artist(Artist *artist, Music *music);
 void edit_artist_by_artist_id(Artist *artist, Music *music, int artist_length);
 void edit_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 void list_artist(Artist *artist, Music *music, int artist_length, int music_length);
-void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id);
+void delete_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length, int id, int alert);
 void delete_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_artist_by_artist_id(Artist *artist, Music *music, int artist_length, int music_length);
 void search_artist_by_music_id(Artist *artist, Music *music, int artist_length, int music_length);
+void export_artist(Artist *artist, int artist_length);
 #endif //__ARTIST_H__
