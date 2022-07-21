@@ -1,7 +1,6 @@
 main: main.o
 	@echo "Generating executable file..."
 	gcc *.o -o main
-	del /Q /F *.o
 	@echo "Executable file generated!"
 
 main.o: main.c
