@@ -1,7 +1,7 @@
 
 # Registratoin and Login System in C
 
-Artist and song registration system with login developed in C.
+Artist and song registration system with login.
 
 ## 🎯 Objective
 Apply knowledge of algorithms and programming logic in the C language to make a registration system, in which:
