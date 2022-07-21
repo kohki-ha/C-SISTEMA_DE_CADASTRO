@@ -16,8 +16,7 @@ Besides having a login system it has six main operations:
 - *List*
 - *Delete*
 - *Search*
-- *Export*
-The *edit*, *delet* and *search* operations can be performed on both artists and songs. They can be accessed by two different fields (e.g., edit an artist by his own ID or by a song ID).
+- *Export*<br>The *edit*, *delet* and *search* operations can be performed on both artists and songs. They can be accessed by two different fields (e.g., edit an artist by his own ID or by a song ID).
 ## 🔧 Usage
 This project uses *Makefile*  to compile and run.
 It has three basics operations:
