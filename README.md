@@ -4,7 +4,7 @@
 Artist and song registration system with login.
 
 ## 🎯 Objective
-Apply knowledge of algorithms and programming logic in the C language to make a registration system, in which:
+Apply knowledge of algorithms and programming logic to make a registration system, in which:
 - must have two structures that talk to each other;
 - the data in the structures should be dynamically allocated and reallocated every 5 when necessary;
 - must save the data created in a binary file and reload it on reboot;
