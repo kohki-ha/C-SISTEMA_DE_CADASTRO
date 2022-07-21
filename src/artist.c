@@ -332,11 +332,11 @@ void export_artist(Artist *artist, int artist_length)
         exit(1);
     }
 
-    fprintf(f, "ID, Name, Age, Gender, Country\n");
+    fprintf(f, "ID; Name; Age; Gender; Country\n");
 
     for (size_t i = 0; i < artist_length; i++)
         if (artist[i].id > -1)
-            fprintf(f, "%d, %s, %d, %s, %s\n", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
+            fprintf(f, "%d; %s; %d; %s; %s\n", artist[i].id, artist[i].name, artist[i].age, artist[i].gender, artist[i].country);
 
     fclose(f);
 }

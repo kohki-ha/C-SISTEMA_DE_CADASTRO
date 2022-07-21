@@ -331,12 +331,12 @@ void export_music(Music *music, Artist *artist, int music_length)
         exit(1);
     }
 
-    fprintf(f, "ID, Name, Album, Genre, Song length , Release date, Artist ID\n");
+    fprintf(f, "ID; Name; Album; Genre; Song length ; Release date; Artist ID\n");
 
     for (size_t i = 0; i < music_length; i++)
     {
         if (music[i].id > -1)
-            fprintf(f, "%d, %s, %s, %s, %d:%d, %d/%d/%d, %d\n", music[i].id, music[i].name, music[i].album, music[i].genre, music[i].song_length.minutes, music[i].song_length.seconds, music[i].release_date.day, music[i].release_date.month, music[i].release_date.year, artist[music[i].id_artist].id);
+            fprintf(f, "%d; %s; %s; %s; %d:%d; %d/%d/%d; %d\n", music[i].id, music[i].name, music[i].album, music[i].genre, music[i].song_length.minutes, music[i].song_length.seconds, music[i].release_date.day, music[i].release_date.month, music[i].release_date.year, artist[music[i].id_artist].id);
     }
 
     fclose(f);
