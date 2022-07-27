@@ -1,5 +1,5 @@
 
-# Registratoin and Login System in C
+# Registratoin System in C
 
 Artist and song registration system with login.
 
